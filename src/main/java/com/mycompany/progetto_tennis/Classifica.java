@@ -11,6 +11,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import utility.*;
@@ -22,6 +24,7 @@ import static utility.Ordinatore.scambia;
 public class Classifica {
     private final static int NUM_MAX_TENNISTI=1000;
     private Tennista[] classificaAtp;
+    private int nTennistiPresenti=0;
     
     public Classifica()
     {
@@ -36,7 +39,7 @@ public class Classifica {
         {
             try 
             {
-                t=c.gettennista(i);
+                t=c.getTennista(i);
                 setTennista(t);
             } 
             catch (EccezioneIdNonValido ex) 
@@ -52,41 +55,39 @@ public class Classifica {
     
     public void setTennista(Tennista t) throws EccezioneClassificaPiena
     {
-        if(Tennista.getNumerotennistiPresenti()>=NUM_MAX_TENNISTI)
+        if(nTennistiPresenti>=NUM_MAX_TENNISTI)
             throw new EccezioneClassificaPiena();
-        for(int i=0;i<classificaAtp.length;i++)
-        {
-            if(classificaAtp[i]==null)
-                classificaAtp[i]=new Tennista(t);
-        }
+        
+        classificaAtp[nTennistiPresenti]=new Tennista(t);
         classificaAtp=Ordinatore.selectionSortDecrescente(classificaAtp);
         ordinatoreId();
+        nTennistiPresenti++;
     }
     
-    public Tennista gettennista(int id) throws EccezioneIdNonValido
+    public Tennista getTennista(int id) throws EccezioneIdNonValido
     {
-        if (id<0 ||id>Tennista.getNumerotennistiPresenti())
+        if (id<0 ||id>nTennistiPresenti-1)
             throw new EccezioneIdNonValido();
         return classificaAtp[id];
         
     }
     
-    public void eliminaTennista(int id)
+    public void eliminaTennista(int id) throws EccezioneIdNonValido
     {
-        for(int i=id;i<Tennista.getNumerotennistiPresenti();i++)
+        if (id<0 ||id>nTennistiPresenti-1)
+            throw new EccezioneIdNonValido();
+     
+        if(id==0)
+            classificaAtp[0]=null;
+        else
         {
-            classificaAtp[i]=classificaAtp[i+1];
+            for(int i=id;i<nTennistiPresenti-1;i++)
+            {
+                classificaAtp[i]=classificaAtp[i+1];
+            }
         }
-        Tennista.diminuisciTennistiPresenti();
+        nTennistiPresenti--;
         ordinatoreId();
-    }
-    
-    public void ordinatoreId()
-    {
-        for(int i=0;i<Tennista.getNumerotennistiPresenti();i++)
-        {
-                classificaAtp[i].setIDTennista(i);
-        }
     }
     
     public int getNumMaxTennisti()
@@ -94,24 +95,40 @@ public class Classifica {
         return NUM_MAX_TENNISTI;
     }
     
-    public void esposrtaCSV(String nomeFileCSV) throws IOException
+    public int getNTennistiPresenti()
+    {
+        return nTennistiPresenti;
+    }
+    
+    public void ordinatoreId()
+    {
+        for(int i=0;i<nTennistiPresenti-1;i++)
+        {
+                classificaAtp[i].setIDTennista(i);
+        }
+    }
+    public void esportaCSV(String nomeFileCSV) throws IOException
     {
         TextFile f1;
         Tennista t;
         f1= new TextFile(nomeFileCSV,'W'); //Apro il file in scrittura
         String datiVolume;
 
-        for(int i=0;i<NUM_MAX_TENNISTI);i++)
+        for(int i=0;i<NUM_MAX_TENNISTI;i++)
         {
             try 
             {
-                t=this.gettennista(i);
-                datiVolume=i+";"+getNome()+";"+getCognome()+";"+getDataNascita()+";"+getPunti()+";"+getTitoliVinti();
+                t=this.getTennista(i);
+                datiVolume=i+";"+t.getNome()+";"+t.getCognome()+";"+t.getDataNascita()+";"+t.getPunti()+";"+t.getTitoliVinti();
                 f1.toFile(datiVolume);
             } 
             catch (FileException ex) 
             {
                 //non succederà mai
+            } 
+            catch (EccezioneIdNonValido ex) 
+            {
+                //non fare nulla
             }
         }
 
@@ -121,12 +138,13 @@ public class Classifica {
     
     public void importaCSV(String nomeFileCSV) throws IOException
     {
-        String titolo,autore;
-        int numeroPagine,ripiano, posizione;
+        String nome, cognome, data;
+        int punti, titoli;
+        LocalDate dataNascita;
         String rigaLetta;
         String[] datiVolume;
         TextFile f1; 
-        Libro lib;
+        Tennista t;
             //Importa da file CSV
             f1=new TextFile(nomeFileCSV,'R');
             do
@@ -135,28 +153,14 @@ public class Classifica {
                 {
                     rigaLetta=f1.fromFile();
                     datiVolume=rigaLetta.split(";");
-                    ripiano=Integer.parseInt(datiVolume[0]);
-                    posizione=Integer.parseInt(datiVolume[1]);
-                    titolo=datiVolume[2];
-                    autore=datiVolume[3];
-                    numeroPagine=Integer.parseInt(datiVolume[4]);
-                    lib=new Libro(titolo,autore,numeroPagine);
-                    try 
-                    {
-                        this.setLibro(lib, ripiano, posizione);
-                    } 
-                    catch (EccezioneRipianoNonValido ex) 
-                    {
-                        System.out.println("Errore: ripiano "+ripiano+ " non corretto per il volume "+titolo);
-                    } 
-                    catch (EccezionePosizioneNonValida ex) 
-                    {
-                         System.out.println("Errore: posizione "+posizione+ " non corretta per il volume "+titolo);
-                    }
-                    catch (EccezionePosizioneOccupata ex) 
-                    {
-                         System.out.println("Nel ripiano  "+ripiano+ " e posizione "+posizione+" è già presente un volume. Il volume "+titolo+ " non sarà posizionato nello scaffale.");
-                    }
+                    nome=datiVolume[1];
+                    cognome=datiVolume[2];
+                    data=datiVolume[3];
+                    dataNascita=LocalDate.parse(data);
+                    punti=Integer.parseInt(datiVolume[4]);
+                    titoli=Integer.parseInt(datiVolume[5]);
+                    t=new Tennista(nome, cognome, dataNascita, punti, titoli);
+                    this.setTennista(t);
                 }
                 catch (FileException ex) 
                 {
@@ -164,6 +168,10 @@ public class Classifica {
                     f1.closeFile();
                     System.out.println("Fine operazione di caricamento");
                     break;
+                } 
+                catch (EccezioneClassificaPiena ex) 
+                {
+                    //non succederà mai
                 }
             }while(true);                
     } 
@@ -177,13 +185,13 @@ public class Classifica {
             writer.close();
     }
     
-    public Scaffale deserializzazione(String nomeFileBinario) throws FileNotFoundException, IOException, ClassNotFoundException
+    public Classifica deserializzazione(String nomeFileBinario) throws FileNotFoundException, IOException, ClassNotFoundException
     {
-        Scaffale s1;
+        Classifica c1;
         ObjectInputStream reader=new ObjectInputStream(new FileInputStream(nomeFileBinario));
-        s1=(Scaffale)reader.readObject();
+        c1=(Classifica)reader.readObject();
         reader.close();
-        return s1;
+        return c1;
     }
     
     @Override
@@ -195,7 +203,7 @@ public class Classifica {
             if (classificaAtp[i]==null)
                 break;
             else
-                s+=i+"-->\t"+classificaAtp[i].toString()+"\n";
+                s+=(i+1)+"-->\t"+classificaAtp[i].toString()+"\n";
         }
         
         return s;

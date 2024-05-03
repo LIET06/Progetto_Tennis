@@ -21,7 +21,7 @@ import utility.*;
  */
 public class App {
     public static void main(String[] args) {
-        int numeroVociMenu=11;
+        int numeroVociMenu=9;
         String[] vociMenu=new String[numeroVociMenu];
         int voceMenuScelta;
         Menu menu;
@@ -61,12 +61,10 @@ public class App {
         vociMenu[2]="2 -->\tAggiungi tennista";
         vociMenu[3]="3 -->\tVisualizza singolo tennista (posizione)";
         vociMenu[4]="4 -->\tElimina tennista (posizione)";
-        vociMenu[5]="5 -->\tMostra numero titoli vinti di un tennista (posizione)";
-        vociMenu[6]="6 -->\tMostra punti di un tennista";
-        vociMenu[7]="7 -->\tEsporta volumi in formato CSV";
-        vociMenu[8]="8 -->\tImporta volumi dal file CSV";
-        vociMenu[9]="9 -->\tSalva dati Bin";
-        vociMenu[10]="10 -->\tCarica dati Bin";
+        vociMenu[5]="5 -->\tEsporta tennisti in formato CSV";
+        vociMenu[6]="6 -->\tImporta tennisti dal file CSV";
+        vociMenu[7]="7 -->\tSalva dati Bin";
+        vociMenu[8]="8 -->\tCarica dati Bin";
         menu=new Menu(vociMenu);
         
         do
@@ -111,105 +109,61 @@ public class App {
                    break;
 
 
-                case 3: //getVolume
-                    System.out.println("Inserisci la posizione del tennista--> ");
-                    posizione=tastiera.readInt();
+                case 3: //getTennista
                     try 
                     {
-                        t=c1.gettennista(posizione);
+                        do{
+                            System.out.println("Inserisci la posizione del tennista--> ");
+                            posizione=tastiera.readInt();
+                            break;
+                        }while(true);
+                        posizione--;
+                        t=c1.getTennista(posizione);
                         System.out.println("Tennista:\n"+t.toString());
                     } 
                     catch (EccezioneIdNonValido ex) 
                     {
                         System.out.println("Posizione non valida");
+                    } 
+                    catch (IOException ex) 
+                    {
+                        System.out.println("Errore. Impossibile leggere da tastiera");
+                    } 
+                    catch (NumberFormatException ex) 
+                    {
+                        System.out.println("Formato non corretto");
                     }
+
                     break;
+
 
                     
-                case 4://Rimuovi volume
-
-                    try 
-                    {
-                        do
+                case 4://Rimuovi tennista
+                        try
                         {
-                            try
-                            {
-                                System.out.println("Ripiano (0..4) --> ");
-                                ripiano=tastiera.readInt();
-                                break;
-                            }
-                            catch (NumberFormatException e)
-                            {
-                                System.out.println("Formato non corretto");
-                            }
-                        }while(true);
-                       
-                        do
-                        {
-                            try
-                            {
-                                System.out.println("Posizione (0..14) --> ");
-                                posizione=tastiera.readInt();
-                                break;
-                            }
-                            catch (NumberFormatException e)
-                            {
-                                System.out.println("Formato non corretto");
-                            }
-                        }while(true);
-                        s1.rimuoviLibro(ripiano, posizione);
-                        System.out.println("Il libro è stato rimosso correttamente");
-                        }
-                        catch(IOException e)
+                            do{
+                            System.out.println("Inserisci la posizione del tennista--> ");
+                            posizione=tastiera.readInt();
+                            break;
+                            }while(true);
+                            posizione--;
+                            c1.eliminaTennista(posizione);
+                        } 
+                        catch (IOException ex) 
                         {
                             System.out.println("Errore. Impossibile leggere da tastiera");
-                        }
-                        catch (EccezioneRipianoNonValido ex) 
-                        {
-                            System.out.println("Ripiano non valido");
                         } 
-                        catch (EccezionePosizioneNonValida ex) 
+                        catch (NumberFormatException ex) 
+                        {
+                            System.out.println("Formato non corretto");
+                        } 
+                        catch (EccezioneIdNonValido ex) 
                         {
                             System.out.println("Posizione non valida");
-                        } 
-                        catch (EccezionePosizioneVuota ex) 
-                        {
-                            System.out.println("La posizione è già vuota. Nessun libro è stto rimosso");
-                    }
-                  
-                    break;
-
-                case 5://Elenco titoli autore
-                    try
-                    {
-                        System.out.println("Autore --> ");
-                        autore=tastiera.readString();
-                        elencoTitoliAutore=s1.elencoTitoliAutore(autore);
-                        if (elencoTitoliAutore!=null)
-                        {
-                            for(int i=0;i<elencoTitoliAutore.length;i++)
-                            {
-                                System.out.println(elencoTitoliAutore[i]);
-                            }
                         }
-                        else
-                            System.out.println("Nessun volume presente per l'autore scelto.");
-                    }
-                    catch (IOException e)
-                    {
-                        System.out.println("Errore. Imposssibile leggere da tastiera");
-                    }
                     break;
-                
-                case 6: //ordine alfabetico titoli volumi
-                    elencoLibriOrdinatiAlfabeticamente=s1.elencoLibriOrdinatoPerTitolo();
-                    for(int i=0;i<elencoLibriOrdinatiAlfabeticamente.length;i++)
-                    {
-                        System.out.println(elencoLibriOrdinatiAlfabeticamente[i].toString());
-                    }
-                    break;
-                
-                case 7: //Esporta CSV
+                    
+                case 5: //Esporta CSV
                     try
                     {
                         c1.esportaCSV(nomeFileCSV);
@@ -219,20 +173,20 @@ public class App {
                         System.out.println("Impossibile ");
                     }
                     break;
-                case 8: 
+                case 6: //Importa CSV
                     try
                     {
-                        s1.importaCSV(nomeFileCSV);
+                        c1.importaCSV(nomeFileCSV);
                     }
                     catch(IOException ex)
                     {
                         System.out.println("Impossibile accedere al file!");
                     }
                     break;
-                case 9: //serializzzione               
+                case 7: //serializzzione               
                     try 
                     {
-                        s1.serializzazione(nomeFileBinario);
+                        c1.serializzazione(nomeFileBinario);
                         System.out.println("Salvataggio avvenuto correttamente");
                     } 
                     catch (FileNotFoundException ex) 
@@ -244,10 +198,10 @@ public class App {
                          System.out.println("Impossibile accedere al file");
                     }
                     break;
-                case 10: //deserializzzione
+                case 8: //deserializzzione
                     try 
                     {
-                        s1.deserializzazione(nomeFileBinario);
+                        c1.deserializzazione(nomeFileBinario);
                         System.out.println("Caricamento effettuato correttamente");
                     } 
                     catch (FileNotFoundException ex) 

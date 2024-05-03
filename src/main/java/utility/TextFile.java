@@ -117,7 +117,7 @@ public class TextFile {
      * 
      * @throws IOException Viene sollevata se non è possibile accedere al file.
      */
-    public void close() throws IOException
+    public void closeFile() throws IOException
     {
         if(mode=='R')
             reader.close();

@@ -301,8 +301,11 @@ public class Ordinatore {
         {
             for(int j=i+1;j<lunghezza;j++)
             {
-                if(vOrdinato[i].getPunti()<vOrdinato[i+1].getPunti())
-                    scambia(vOrdinato, i, j);
+                if(vOrdinato[i]!=null&&vOrdinato[j]!=null)
+                {
+                    if(vOrdinato[i].getPunti()<vOrdinato[j].getPunti())
+                        scambia(vOrdinato, i, j);
+                }
             }
         }
         return vOrdinato;

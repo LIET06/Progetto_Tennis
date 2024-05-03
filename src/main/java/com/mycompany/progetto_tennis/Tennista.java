@@ -12,7 +12,7 @@ import java.time.LocalDate;
  * @author Studente
  */
 public class Tennista implements Serializable{
-    private static int tennistiPresenti=1;
+    private static int nextID=1;
     private int idTennista;
     private String nome;
     private String cognome;
@@ -21,8 +21,8 @@ public class Tennista implements Serializable{
     private int titoliVinti;
 
     public Tennista(String nome, String cognome, LocalDate dataDiNascita, int punti, int titoliVinti) {
-        this.idTennista=tennistiPresenti;
-        tennistiPresenti++;
+        this.idTennista=nextID;
+        nextID++;
         setNome(nome);
         setCognome(cognome);
         setDataNascita(dataNascita);
@@ -38,16 +38,7 @@ public class Tennista implements Serializable{
         setPunti(t.getPunti());
         setTitoliVinti(t.getTitoliVinti());
     }
-
-    public static int getNumerotennistiPresenti()
-    {
-        return tennistiPresenti;
-    }
     
-    public static void diminuisciTennistiPresenti()
-    {
-        tennistiPresenti--;
-    }
     public int getIdTennista()
     {
         return idTennista;
