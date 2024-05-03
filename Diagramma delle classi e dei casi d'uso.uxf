@@ -4,7 +4,7 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>280</x>
+      <x>350</x>
       <y>0</y>
       <w>540</w>
       <h>550</h>
@@ -15,7 +15,7 @@
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>350</x>
+      <x>420</x>
       <y>60</y>
       <w>320</w>
       <h>40</h>
@@ -26,7 +26,7 @@
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>350</x>
+      <x>420</x>
       <y>120</y>
       <w>330</w>
       <h>40</h>
@@ -37,7 +37,7 @@
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>350</x>
+      <x>420</x>
       <y>170</y>
       <w>330</w>
       <h>40</h>
@@ -48,7 +48,7 @@
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>350</x>
+      <x>420</x>
       <y>220</y>
       <w>330</w>
       <h>40</h>
@@ -59,7 +59,7 @@
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>340</x>
+      <x>410</x>
       <y>270</y>
       <w>330</w>
       <h>40</h>
@@ -70,7 +70,7 @@
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>350</x>
+      <x>420</x>
       <y>320</y>
       <w>330</w>
       <h>40</h>
@@ -81,7 +81,7 @@
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>350</x>
+      <x>420</x>
       <y>380</y>
       <w>330</w>
       <h>40</h>
@@ -92,7 +92,7 @@
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>350</x>
+      <x>420</x>
       <y>430</y>
       <w>330</w>
       <h>40</h>
@@ -103,7 +103,7 @@
   <element>
     <id>UMLActor</id>
     <coordinates>
-      <x>100</x>
+      <x>170</x>
       <y>260</y>
       <w>60</w>
       <h>110</h>
@@ -114,7 +114,7 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>140</x>
+      <x>210</x>
       <y>70</y>
       <w>230</w>
       <h>240</h>
@@ -125,7 +125,7 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>140</x>
+      <x>210</x>
       <y>130</y>
       <w>230</w>
       <h>180</h>
@@ -136,7 +136,7 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>140</x>
+      <x>210</x>
       <y>180</y>
       <w>230</w>
       <h>130</h>
@@ -147,7 +147,7 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>140</x>
+      <x>210</x>
       <y>230</y>
       <w>230</w>
       <h>80</h>
@@ -158,7 +158,7 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>140</x>
+      <x>210</x>
       <y>270</y>
       <w>220</w>
       <h>40</h>
@@ -169,7 +169,7 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>140</x>
+      <x>210</x>
       <y>280</y>
       <w>230</w>
       <h>80</h>
@@ -180,7 +180,7 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>140</x>
+      <x>210</x>
       <y>280</y>
       <w>230</w>
       <h>140</h>
@@ -191,7 +191,7 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>140</x>
+      <x>210</x>
       <y>280</y>
       <w>230</w>
       <h>190</h>
@@ -202,13 +202,14 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>230</x>
+      <x>300</x>
       <y>660</y>
       <w>380</w>
-      <h>400</h>
+      <h>430</h>
     </coordinates>
     <panel_attributes>Tennista
 --
+-nextID: static int
 -idTennista: int
 -nome: String
 -cognome: String
@@ -218,15 +219,31 @@
 --
 +Tennista(nome: String, cognome: String, 
 dataNascita: LocalDate, punti: int, titoliVinti: int)
-+Tennista(t: Tennista)</panel_attributes>
++Tennista(t: Tennista)
++getIdTennista(): int
++setIdTennista(id: int)
++getNome(): String
++setNome(nome: String)
++getCognome(): String
++setCognome(cognome: String)
++getDataNascita(): Localdate
++setDataNascita(dataNascita: LocalDate)
++getPunti(): int
++setPunti(punti: int)
++getTitoliVinti(): int
++setTitoliVinti(tivoliVinti: int)
++toString(): String
++equals(t: Object): boolean
+
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>920</x>
+      <x>1000</x>
       <y>670</y>
-      <w>330</w>
+      <w>360</w>
       <h>380</h>
     </coordinates>
     <panel_attributes>Classifica
@@ -236,22 +253,32 @@ dataNascita: LocalDate, punti: int, titoliVinti: int)
 --
 +Classifica()
 +Classifica(c: Classifica)
-+
++setTennista(t: Tennista)
++getTennista(id: int): Tennista
++eliminaTennista(id: int)
++getNumMaxTennisti(): int
++getNTennistiPresenti(): int
++ordinatoreId()
++esportaCSV(nomeFileCSV: String)
++importaCSV(nomeFileCSV: String)
++serializzazione(nomeFileBinario: String)
++deserializzazione(nomeFileBinario: String): Classifica
++toString(): String
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>600</x>
+      <x>670</x>
       <y>680</y>
-      <w>340</w>
+      <w>350</w>
       <h>50</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-
 -classificaAtp: Tennista[]
 m2=0..NUM_MAX_TENNISTI
 m1=1</panel_attributes>
-    <additional_attributes>320.0;20.0;10.0;20.0</additional_attributes>
+    <additional_attributes>330.0;20.0;10.0;20.0</additional_attributes>
   </element>
 </diagram>

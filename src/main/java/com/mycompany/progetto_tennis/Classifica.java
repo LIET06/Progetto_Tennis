@@ -76,15 +76,10 @@ public class Classifica {
     {
         if (id<0 ||id>nTennistiPresenti-1)
             throw new EccezioneIdNonValido();
-     
-        if(id==0)
-            classificaAtp[0]=null;
-        else
+        
+        for(int i=id;i<nTennistiPresenti;i++)
         {
-            for(int i=id;i<nTennistiPresenti-1;i++)
-            {
-                classificaAtp[i]=classificaAtp[i+1];
-            }
+            classificaAtp[i]=classificaAtp[i+1];
         }
         nTennistiPresenti--;
         ordinatoreId();

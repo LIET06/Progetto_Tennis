@@ -4,12 +4,8 @@
  */
 package com.mycompany.progetto_tennis;
 
-import eccezioni.EccezioneClassificaPiena;
-import eccezioni.EccezioneIdNonValido;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import eccezioni.*;
+import java.io.*;
 import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -76,7 +72,10 @@ public class App {
                     System.out.println("Arrivederci");
                     break;
                 case 1://Visualizza tutti
-                    System.out.println(c1.toString());
+                    if(c1.getNTennistiPresenti()==0)
+                        System.out.println("Non ci sono tennisti all'interno della classifica");
+                    else
+                        System.out.println(c1.toString());
                     break;
                 case 2://Aggiungi tennista   
                     try{
@@ -105,8 +104,9 @@ public class App {
                     catch (EccezioneClassificaPiena ex) 
                     {
                         System.out.println("Impossibile aggiungere il tennista. Classifica piena, eliminiare un tennista prima di aggiungerene un altro");
-                    }
+                    } 
                    break;
+
 
 
                 case 3: //getTennista
@@ -148,6 +148,7 @@ public class App {
                             }while(true);
                             posizione--;
                             c1.eliminaTennista(posizione);
+                            System.out.println("Tennista eliminato correttamente.");
                         } 
                         catch (IOException ex) 
                         {
