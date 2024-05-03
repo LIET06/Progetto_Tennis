@@ -4,14 +4,15 @@
  */
 package com.mycompany.progetto_tennis;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
  *
  * @author Studente
  */
-public class Tennista {
-    private static int nextId=1;
+public class Tennista implements Serializable{
+    private static int tennistiPresenti=1;
     private int idTennista;
     private String nome;
     private String cognome;
@@ -20,8 +21,8 @@ public class Tennista {
     private int titoliVinti;
 
     public Tennista(String nome, String cognome, LocalDate dataDiNascita, int punti, int titoliVinti) {
-        this.idTennista=nextId;
-        nextId++;
+        this.idTennista=tennistiPresenti;
+        tennistiPresenti++;
         setNome(nome);
         setCognome(cognome);
         setDataNascita(dataNascita);
@@ -38,7 +39,15 @@ public class Tennista {
         setTitoliVinti(t.getTitoliVinti());
     }
 
+    public static int getNumerotennistiPresenti()
+    {
+        return tennistiPresenti;
+    }
     
+    public static void diminuisciTennistiPresenti()
+    {
+        tennistiPresenti--;
+    }
     public int getIdTennista()
     {
         return idTennista;
@@ -105,4 +114,15 @@ public class Tennista {
         return s;
     }
     
+    public boolean equals(Object t)
+    {
+        Tennista ten;
+        ten=(Tennista)t;
+        if(ten.getNome()==getNome()&&ten.getCognome()==getCognome()&&ten.getDataNascita()
+                ==getDataNascita()&&ten.getPunti()==getPunti()&&ten.getTitoliVinti()==getTitoliVinti())
+            return true;
+        else
+            return false;
+        
+    }
 }

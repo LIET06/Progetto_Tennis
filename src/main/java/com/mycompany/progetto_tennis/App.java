@@ -4,6 +4,7 @@
  */
 package com.mycompany.progetto_tennis;
 
+import eccezioni.EccezioneClassificaPiena;
 import eccezioni.EccezioneIdNonValido;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -58,14 +59,14 @@ public class App {
         vociMenu[0]="0 -->\tEsci";
         vociMenu[1]="1 -->\tVisualizza tutti i tennisti";
         vociMenu[2]="2 -->\tAggiungi tennista";
-        vociMenu[3]="3 -->\tCerca tennista (posizione)";
+        vociMenu[3]="3 -->\tVisualizza singolo tennista (posizione)";
         vociMenu[4]="4 -->\tElimina tennista (posizione)";
         vociMenu[5]="5 -->\tMostra numero titoli vinti di un tennista (posizione)";
-        vociMenu[6]="6 -->\tMostra elenco dei volumi presenti ordinato alfabeticamente per titolo";
+        vociMenu[6]="6 -->\tMostra punti di un tennista";
         vociMenu[7]="7 -->\tEsporta volumi in formato CSV";
         vociMenu[8]="8 -->\tImporta volumi dal file CSV";
-        vociMenu[9]="9 -->\tSalva dati scaffale";
-        vociMenu[10]="10 -->\tCarica dati scaffale";
+        vociMenu[9]="9 -->\tSalva dati Bin";
+        vociMenu[10]="10 -->\tCarica dati Bin";
         menu=new Menu(vociMenu);
         
         do
@@ -95,16 +96,20 @@ public class App {
                         titoli=tastiera.readInt();
                         System.out.println("Punti --> ");
                         punti=tastiera.readInt();
+                        t=new Tennista(nome, cognome, LocalDate.of(aa, mm, gg), punti, titoli);
+                        c1.setTennista(t);
+                        System.out.println("Tennista inserito correttamente.");
                     }
                     catch(IOException ex)
                     {
                         System.out.println("Errore. Impossibile leggere da tastiera.");
+                    } 
+                    catch (EccezioneClassificaPiena ex) 
+                    {
+                        System.out.println("Impossibile aggiungere il tennista. Classifica piena, eliminiare un tennista prima di aggiungerene un altro");
                     }
-
-                    t=new Tennista(nome, cognome, LocalDate.of(aa, mm, gg), punti, titoli);
-                    c1.setTennista(t);
-                    System.out.println("Tennista inserito correttamente.");      
                    break;
+
 
                 case 3: //getVolume
                     System.out.println("Inserisci la posizione del tennista--> ");
@@ -207,7 +212,7 @@ public class App {
                 case 7: //Esporta CSV
                     try
                     {
-                        s1.esposrtaCSV(nomeFileCSV);
+                        c1.esportaCSV(nomeFileCSV);
                     }
                     catch(IOException ex)
                     {
