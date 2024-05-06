@@ -13,9 +13,9 @@ import utility.*;
 
 /**
  *
- * @author Studente
+ * @author LL
  */
-public class App {
+public class App implements Serializable{
     public static void main(String[] args) {
         int numeroVociMenu=9;
         String[] vociMenu=new String[numeroVociMenu];

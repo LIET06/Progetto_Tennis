@@ -11,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
@@ -18,19 +19,26 @@ import java.util.logging.Logger;
 import utility.*;
 import static utility.Ordinatore.scambia;
 /**
- *
- * @author Studente
+ * Rappresenta una classifica composta da tennisti di classe Tennista
+ * @author LL
  */
-public class Classifica {
+public class Classifica implements Serializable{
     private final static int NUM_MAX_TENNISTI=1000;
     private Tennista[] classificaAtp;
     private int nTennistiPresenti=0;
     
+    /**
+     * Costruttore della classifica
+     */
     public Classifica()
     {
         classificaAtp=new Tennista[NUM_MAX_TENNISTI];
     }
     
+    /**
+     * Costruttore di copia
+     * @param c classifica da copiare
+     */
     public Classifica(Classifica c)
     {
         classificaAtp=new Tennista[NUM_MAX_TENNISTI];
@@ -53,6 +61,12 @@ public class Classifica {
         }
     }
     
+    /**
+     * Inserisce il tennista all'interno della classifica 
+     * posizionandolo in base ai punti
+     * @param t tennista da aggiungere
+     * @throws EccezioneClassificaPiena se la classifica ha raggiunto il numero massimo di tennisti che può contenere
+     */
     public void setTennista(Tennista t) throws EccezioneClassificaPiena
     {
         if(nTennistiPresenti>=NUM_MAX_TENNISTI)
@@ -64,6 +78,14 @@ public class Classifica {
         nTennistiPresenti++;
     }
     
+    /**
+     * Restituisce il tennista in posizione "id"
+     * @param id
+     * @return il tennista
+     * @throws EccezioneIdNonValido se la posizione passata 
+     *         dall'utente non corrisponde a nessun tennista, ovvero se 
+     *         è minore di 0 o maggiore del numero di tennisti presenti
+     */
     public Tennista getTennista(int id) throws EccezioneIdNonValido
     {
         if (id<0 ||id>nTennistiPresenti-1)
@@ -72,6 +94,13 @@ public class Classifica {
         
     }
     
+    /**
+     * Rimuove il tennista in posizione "id"
+     * @param id
+     * @throws EccezioneIdNonValido se la posizione passata 
+     *         dall'utente non corrisponde a nessun tennista, ovvero se 
+     *         è minore di 0 o maggiore del numero di tennisti presenti
+     */
     public void eliminaTennista(int id) throws EccezioneIdNonValido
     {
         if (id<0 ||id>nTennistiPresenti-1)
@@ -85,16 +114,31 @@ public class Classifica {
         ordinatoreId();
     }
     
+    /**
+     * Restituisce il numero massimo di tennisti inseribili nella classifica
+     * @return NUM_MAX_TENNISTI
+     */
     public int getNumMaxTennisti()
     {
         return NUM_MAX_TENNISTI;
     }
     
+    /**
+     * Restituisce il numero di tennisti presenti nella classifica
+     * @return nTennistiPresenti
+     */
     public int getNTennistiPresenti()
     {
         return nTennistiPresenti;
     }
     
+    /**
+     * Assegna gli ID in ordine in base alla classifica:
+     *              posizione 1--> ID=1
+     *              posizione 2--> ID=2
+     *              posizione 3--> ID=3
+     *              ...
+     */
     public void ordinatoreId()
     {
         for(int i=0;i<nTennistiPresenti-1;i++)
@@ -102,6 +146,15 @@ public class Classifica {
                 classificaAtp[i].setIDTennista(i);
         }
     }
+    
+    /**
+     * Esporta i tennisti presenti nella classifica in un file di testo in formato CSV.
+     * Per ogni tennista vengono esportate le seguenti informazioni:
+     * id;nome;cognome;dataNascita;punti;titoliVinti.
+     * Prima di esportare i tennisti, cancello dal file CSV tutti i dati presenti
+     * @param nomeFileCSV
+     * @throws IOException Se non è possibile accedere al file
+     */
     public void esportaCSV(String nomeFileCSV) throws IOException
     {
         TextFile f1;
@@ -131,6 +184,11 @@ public class Classifica {
         System.out.println("Esportazione avvenuta correttamente.");
     } 
     
+    /**
+     * Legge i tennisti presenti in un file di testo CSV e li aggiunge alla classifica.
+     * @param nomeFileCSV
+     * @throws IOException Se non è possibile accedere al file
+     */
     public void importaCSV(String nomeFileCSV) throws IOException
     {
         String nome, cognome, data;
@@ -171,15 +229,29 @@ public class Classifica {
             }while(true);                
     } 
     
+    /**
+     * Salva l'oggetto Classifica this (e tutti gli oggetti in esso contenuti) su un file binario
+     * @param nomeFileBinario Nome del file
+     * @throws FileNotFoundException Se il file non viene trovato in fase di chiusura
+     * @throws IOException Se non è possibile accedere al file
+     */
     public void serializzazione(String nomeFileBinario) throws FileNotFoundException, IOException
     {
-        
-            ObjectOutputStream writer=new ObjectOutputStream(new FileOutputStream(nomeFileBinario));
-            writer.writeObject(this);
-            writer.flush();
-            writer.close();
+        ObjectOutputStream writer=new ObjectOutputStream(new FileOutputStream(nomeFileBinario));
+        writer.writeObject(this);
+        writer.flush();
+        writer.close();
     }
     
+    /**
+     * Restituisce un oggetto Classifica (e tutti gli oggetti in esso contenuti)
+     * precedentemente memorizzato in un file binario
+     * @param nomeFileBinario Pathname del file binario
+     * @return c1
+     * @throws FileNotFoundException Se il file non viene trovato in fase di chiusura
+     * @throws IOException      Se non è possibile accedere al file
+     * @throws ClassNotFoundException Se la struttura dati memorizzata nel file non corrisponde allo scaffale
+     */
     public Classifica deserializzazione(String nomeFileBinario) throws FileNotFoundException, IOException, ClassNotFoundException
     {
         Classifica c1;
