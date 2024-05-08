@@ -236,14 +236,17 @@ public class Classifica implements Serializable{
                 {
                     rigaLetta=f1.fromFile();
                     datiVolume=rigaLetta.split(";");
-                    nome=datiVolume[1];
-                    cognome=datiVolume[2];
-                    data=datiVolume[3];
-                    dataNascita=LocalDate.parse(data);
-                    punti=Integer.parseInt(datiVolume[4]);
-                    titoli=Integer.parseInt(datiVolume[5]);
-                    t=new Tennista(nome, cognome, dataNascita, punti, titoli);
-                    this.setTennista(t);
+                    if(datiVolume.length>1)
+                    {
+                        nome=datiVolume[1];
+                        cognome=datiVolume[2];
+                        data=datiVolume[3];
+                        dataNascita=LocalDate.parse(data);
+                        punti=Integer.parseInt(datiVolume[4]);
+                        titoli=Integer.parseInt(datiVolume[5]);
+                        t=new Tennista(nome, cognome, dataNascita, punti, titoli);
+                        this.setTennista(t);
+                    }
                 }
                 catch (FileException ex) 
                 {
@@ -304,6 +307,39 @@ public class Classifica implements Serializable{
         }
         
         return s;
+    }
+    
+    /**
+     * Permette di confrontare correttamente i tennisti di diverse classifiche
+     * @param c
+     * @return true o false
+     */
+    public boolean equals(Object c)
+    {
+        Classifica c1;
+        c1=(Classifica)c;
+        if(c1.getNTennistiPresenti()==nTennistiPresenti)
+        {
+            for(int i=0;i<nTennistiPresenti;i++)
+            {
+                try 
+                {
+                    if(!(c1.getTennista(i)).equals(getTennista(i)))
+                    {
+                        return false;
+                    }
+                } 
+                catch (EccezioneIdNonValido ex) 
+                {
+                    //non succederà mai
+                }
+            }
+            return true;
+        }
+        else
+            return false;
+        
+        
     }
     
 }
