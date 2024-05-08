@@ -80,7 +80,7 @@ public class Classifica implements Serializable{
     
     /**
      * Restituisce il tennista in posizione "id"
-     * @param id
+     * @param id posizione del tennista
      * @return il tennista
      * @throws EccezioneIdNonValido se la posizione passata 
      *         dall'utente non corrisponde a nessun tennista, ovvero se 
@@ -96,7 +96,7 @@ public class Classifica implements Serializable{
     
     /**
      * Rimuove il tennista in posizione "id"
-     * @param id
+     * @param id posizione del tennista
      * @throws EccezioneIdNonValido se la posizione passata 
      *         dall'utente non corrisponde a nessun tennista, ovvero se 
      *         è minore di 0 o maggiore del numero di tennisti presenti
@@ -145,6 +145,36 @@ public class Classifica implements Serializable{
         {
                 classificaAtp[i].setIDTennista(i);
         }
+    }
+    
+    /**
+     * Aggiungi dei punti ad un tennista
+     * @param punti punti da aggiungere
+     * @param id posizione del tennista
+     * @throws eccezioni.EccezioneIdNonValido se la posizione passata 
+     *         dall'utente non corrisponde a nessun tennista, ovvero se 
+     *         è minore di 0 o maggiore del numero di tennisti presenti
+     */
+    public void aggiungiPuntiTennista(int punti, int id) throws EccezioneIdNonValido
+    {
+        if (id<0 ||id>nTennistiPresenti-1)
+            throw new EccezioneIdNonValido();
+        classificaAtp[id].setPunti((classificaAtp[id].getPunti()+punti));
+    }
+    
+    /**
+     * Aggiungi dei titoli vinti ad un tennista
+     * @param titoli numero titoli da aggiungere
+     * @param id posizione del tennista
+     * @throws eccezioni.EccezioneIdNonValido se la posizione passata 
+     *         dall'utente non corrisponde a nessun tennista, ovvero se 
+     *         è minore di 0 o maggiore del numero di tennisti presenti
+     */
+    public void aggiungiTitoliTennista(int titoli, int id) throws EccezioneIdNonValido
+    {
+        if (id<0 ||id>nTennistiPresenti-1)
+            throw new EccezioneIdNonValido();
+        classificaAtp[id].setTitoliVinti((classificaAtp[id].getTitoliVinti()+titoli));
     }
     
     /**

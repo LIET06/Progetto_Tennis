@@ -17,7 +17,7 @@ import utility.*;
  */
 public class App implements Serializable{
     public static void main(String[] args) {
-        int numeroVociMenu=9;
+        int numeroVociMenu=11;
         String[] vociMenu=new String[numeroVociMenu];
         int voceMenuScelta;
         Menu menu;
@@ -28,6 +28,7 @@ public class App implements Serializable{
         String nomeFileBinario="classifica.bin";
         String nome, cognome;
         int gg,mm,aa,punti,titoli,posizione;
+        boolean bisestile;
         Tennista t;
         
         
@@ -57,10 +58,12 @@ public class App implements Serializable{
         vociMenu[2]="2 -->\tAggiungi tennista";
         vociMenu[3]="3 -->\tVisualizza singolo tennista (posizione)";
         vociMenu[4]="4 -->\tElimina tennista (posizione)";
-        vociMenu[5]="5 -->\tEsporta tennisti in formato CSV";
-        vociMenu[6]="6 -->\tImporta tennisti dal file CSV";
-        vociMenu[7]="7 -->\tSalva dati Bin";
-        vociMenu[8]="8 -->\tCarica dati Bin";
+        vociMenu[5]="5 -->\tAggiungi punti a tennista";
+        vociMenu[6]="6 -->\tAggiungi titoli a tennista";
+        vociMenu[7]="7 -->\tEsporta tennisti in formato CSV";
+        vociMenu[8]="8 -->\tImporta tennisti dal file CSV";
+        vociMenu[9]="9 -->\tSalva dati Bin";
+        vociMenu[10]="10 -->\tCarica dati Bin";
         menu=new Menu(vociMenu);
         
         do
@@ -71,24 +74,77 @@ public class App implements Serializable{
                 case 0: //Esci
                     System.out.println("Arrivederci");
                     break;
+                    
                 case 1://Visualizza tutti
                     if(c1.getNTennistiPresenti()==0)
                         System.out.println("Non ci sono tennisti all'interno della classifica");
                     else
                         System.out.println(c1.toString());
                     break;
+                    
                 case 2://Aggiungi tennista   
                     try{
                         System.out.println("Nome --> ");
                         nome=tastiera.readString();
                         System.out.println("Cognome --> ");
                         cognome=tastiera.readString();
-                        System.out.println("Giorno di nascita --> ");
-                        gg=tastiera.readInt();
-                        System.out.println("Mese di nascita --> ");
-                        mm=tastiera.readInt();
                         System.out.println("Anno di nascita --> ");
                         aa=tastiera.readInt();
+                        while(aa<=0||aa>LocalDate.now().getYear())
+                        {
+                            System.out.println("Inserisci un anno corretto!");
+                            System.out.println("Anno di nascita --> ");
+                            aa=tastiera.readInt();
+                        }
+                        
+                        if(aa%4==0)
+                        {
+                            if(aa%100==0)
+                            {
+                                if(aa%400==0)
+                                    bisestile=true;
+                                else
+                                    bisestile=false;
+                            }
+                            bisestile=true;
+                        }
+                        else
+                            bisestile=false;
+                        
+                        System.out.println("Mese di nascita --> ");
+                        mm=tastiera.readInt();
+                        while(mm<=0||mm>12)
+                        {
+                            System.out.println("Inserisci un mese corretto(1-12)!");
+                            System.out.println("Mese di nascita --> ");
+                            mm=tastiera.readInt();
+                        }
+                        System.out.println("Giorno di nascita --> ");
+                        gg=tastiera.readInt();
+                        while((mm==2&&bisestile==true)&&(gg<=0||gg>29))
+                        {
+                            System.out.println("Inserisci un giorno corretto(1-29)!");
+                            System.out.println("Giorno di nascita --> ");
+                            gg=tastiera.readInt();
+                        }
+                        while((mm==2&&bisestile==false)&&(gg<=0||gg>28))
+                        {
+                            System.out.println("Inserisci un giorno corretto(1-28)!");
+                            System.out.println("Giorno di nascita --> ");
+                            gg=tastiera.readInt();
+                        }
+                        while((mm==1||mm==3||mm==5||mm==7||mm==8||mm==10||mm==12)&&(gg<=0||gg>31))
+                        {
+                            System.out.println("Inserisci un giorno corretto(1-31)!");
+                            System.out.println("Giorno di nascita --> ");
+                            gg=tastiera.readInt();
+                        }
+                        while((mm==4|mm==6||mm==9||mm==11)&&(gg<=0||gg>30))
+                        {
+                            System.out.println("Inserisci un giorno corretto(1-30)!");
+                            System.out.println("Giorno di nascita --> ");
+                            gg=tastiera.readInt();
+                        }
                         System.out.println("Numero titoli vinti --> ");
                         titoli=tastiera.readInt();
                         System.out.println("Punti --> ");
@@ -107,16 +163,11 @@ public class App implements Serializable{
                     } 
                    break;
 
-
-
                 case 3: //getTennista
                     try 
                     {
-                        do{
-                            System.out.println("Inserisci la posizione del tennista--> ");
-                            posizione=tastiera.readInt();
-                            break;
-                        }while(true);
+                        System.out.println("Inserisci la posizione del tennista--> ");
+                        posizione=tastiera.readInt();
                         posizione--;
                         t=c1.getTennista(posizione);
                         System.out.println("Tennista:\n"+t.toString());
@@ -135,17 +186,12 @@ public class App implements Serializable{
                     }
 
                     break;
-
-
-                    
+ 
                 case 4://Rimuovi tennista
                         try
                         {
-                            do{
                             System.out.println("Inserisci la posizione del tennista--> ");
                             posizione=tastiera.readInt();
-                            break;
-                            }while(true);
                             posizione--;
                             c1.eliminaTennista(posizione);
                             System.out.println("Tennista eliminato correttamente.");
@@ -164,7 +210,69 @@ public class App implements Serializable{
                         }
                     break;
                     
-                case 5: //Esporta CSV
+                case 5://aggiungi punti
+                    try 
+                    {
+                        System.out.println("Inserisci la posizione del tennista--> ");
+                        posizione=tastiera.readInt();
+                        posizione--;
+                        System.out.println("Punti --> ");
+                        punti=tastiera.readInt();
+                        while(punti<=0)
+                        {
+                            System.out.println("Inserisci dei punti validi(>0)!");
+                            System.out.println("Punti --> ");
+                            punti=tastiera.readInt();
+                        }
+                        c1.aggiungiPuntiTennista(punti, posizione);
+                        System.out.println("Punti inseriti correttamente.");
+                    } 
+                    catch (IOException ex) 
+                    {
+                        System.out.println("Errore. Impossibile leggere da tastiera");
+                    } 
+                    catch (NumberFormatException ex) 
+                    {
+                        System.out.println("Formato non corretto");
+                    } 
+                    catch (EccezioneIdNonValido ex) 
+                    {
+                        System.out.println("Posizione non valida");
+                    }
+                    break;
+                    
+                case 6://aggiungi titoli
+                    try 
+                    {
+                        System.out.println("Inserisci la posizione del tennista--> ");
+                        posizione=tastiera.readInt();
+                        posizione--;
+                        System.out.println("Titoli --> ");
+                        titoli=tastiera.readInt();
+                        while(titoli<=0)
+                        {
+                            System.out.println("Inserisci un numero di titoli validi(>0)!");
+                            System.out.println("Titoli --> ");
+                            titoli=tastiera.readInt();
+                        }
+                        c1.aggiungiTitoliTennista(titoli, posizione);
+                        System.out.println("Titoli inseriti correttamente.");
+                    } 
+                    catch (IOException ex) 
+                    {
+                        System.out.println("Errore. Impossibile leggere da tastiera");
+                    } 
+                    catch (NumberFormatException ex) 
+                    {
+                        System.out.println("Formato non corretto");
+                    } 
+                    catch (EccezioneIdNonValido ex) 
+                    {
+                        System.out.println("Posizione non valida");
+                    }
+                    break;
+                    
+                case 7: //Esporta CSV
                     try
                     {
                         c1.esportaCSV(nomeFileCSV);
@@ -174,7 +282,8 @@ public class App implements Serializable{
                         System.out.println("Impossibile ");
                     }
                     break;
-                case 6: //Importa CSV
+                    
+                case 8: //Importa CSV
                     try
                     {
                         c1.importaCSV(nomeFileCSV);
@@ -184,7 +293,8 @@ public class App implements Serializable{
                         System.out.println("Impossibile accedere al file!");
                     }
                     break;
-                case 7: //serializzzione               
+                    
+                case 9: //serializzzione               
                     try 
                     {
                         c1.serializzazione(nomeFileBinario);
@@ -199,7 +309,8 @@ public class App implements Serializable{
                          System.out.println("Impossibile accedere al file");
                     }
                     break;
-                case 8: //deserializzzione
+                    
+                case 10: //deserializzzione
                     try 
                     {
                         c1.deserializzazione(nomeFileBinario);

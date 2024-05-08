@@ -4,6 +4,7 @@
  */
 package com.mycompany.progetto_tennis;
 
+import eccezioni.EccezioneIdNonValido;
 import java.io.Serializable;
 import java.time.LocalDate;
 
