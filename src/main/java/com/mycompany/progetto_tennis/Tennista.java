@@ -138,7 +138,10 @@ public class Tennista implements Serializable{
      */
     public void setPunti(int punti) 
     {
-        this.punti = punti;
+        if(punti<0)
+            this.punti=0;
+        else
+            this.punti = punti;
     }
 
     /**
@@ -156,7 +159,10 @@ public class Tennista implements Serializable{
      */
     public void setTitoliVinti(int titoliVinti) 
     {
-        this.titoliVinti = titoliVinti;
+        if(titoliVinti<0)
+            this.titoliVinti=0;
+        else
+            this.titoliVinti = titoliVinti;
     }
     
     /**
@@ -175,6 +181,7 @@ public class Tennista implements Serializable{
      * @param t 
      * @return true o false
      */
+    @Override
     public boolean equals(Object t)
     {
         Tennista ten;

@@ -442,12 +442,12 @@ public class ClassificaTest {
     /**
      * Test of toString method, of class Classifica.
      */
-    /*@Test
+    @Test
     public void testToString() throws Exception{
         Classifica c1=new Classifica();
         Tennista t=new Tennista("Luca", "Lieto", LocalDate.of(2006, 12, 13), 200, 2);
         c1.setTennista(t);
-        String StringaAttesa="1-->	Luca;Lieto;2006-12-13; Punti: 200; Titoli: 2";
+        String StringaAttesa="1-->\tLuca;Lieto;2006-12-13; Punti: 200; Titoli: 2\n";
         assertEquals(StringaAttesa, c1.toString());
     }
     

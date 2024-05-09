@@ -314,6 +314,7 @@ public class Classifica implements Serializable{
      * @param c
      * @return true o false
      */
+    @Override
     public boolean equals(Object c)
     {
         Classifica c1;
