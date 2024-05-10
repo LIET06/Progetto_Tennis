@@ -341,8 +341,6 @@ public class Classifica implements Serializable{
         }
         else
             return false;
-        
-        
     }
     
 }
