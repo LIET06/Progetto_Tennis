@@ -164,30 +164,42 @@ public class App implements Serializable{
                    break;
 
                 case 3: //getTennista
-                    try 
+                    if(c1.getNTennistiPresenti()==0)
                     {
-                        System.out.println("Inserisci la posizione del tennista--> ");
-                        posizione=tastiera.readInt();
-                        posizione--;
-                        t=c1.getTennista(posizione);
-                        System.out.println("Tennista:\n"+t.toString());
-                    } 
-                    catch (EccezioneIdNonValido ex) 
-                    {
-                        System.out.println("Posizione non valida");
-                    } 
-                    catch (IOException ex) 
-                    {
-                        System.out.println("Errore. Impossibile leggere da tastiera");
-                    } 
-                    catch (NumberFormatException ex) 
-                    {
-                        System.out.println("Formato non corretto");
+                        System.out.println("Non ci sono tennisti all'interno della classifica");
                     }
-
+                    else
+                    {
+                        try 
+                        {
+                            System.out.println("Inserisci la posizione del tennista--> ");
+                            posizione=tastiera.readInt();
+                            posizione--;
+                            t=c1.getTennista(posizione);
+                            System.out.println("Tennista:\n"+t.toString());
+                        } 
+                        catch (EccezioneIdNonValido ex) 
+                        {
+                            System.out.println("Posizione non valida");
+                        } 
+                        catch (IOException ex) 
+                        {
+                            System.out.println("Errore. Impossibile leggere da tastiera");
+                        } 
+                        catch (NumberFormatException ex) 
+                        {
+                            System.out.println("Formato non corretto");
+                        }
+                    }
                     break;
  
                 case 4://Rimuovi tennista
+                    if(c1.getNTennistiPresenti()==0)
+                    {
+                        System.out.println("Non ci sono tennisti all'interno della classifica");
+                    }
+                    else
+                    {
                         try
                         {
                             System.out.println("Inserisci la posizione del tennista--> ");
@@ -208,67 +220,82 @@ public class App implements Serializable{
                         {
                             System.out.println("Posizione non valida");
                         }
+                    }
                     break;
                     
                 case 5://aggiungi punti
-                    try 
+                    if(c1.getNTennistiPresenti()==0)
                     {
-                        System.out.println("Inserisci la posizione del tennista--> ");
-                        posizione=tastiera.readInt();
-                        posizione--;
-                        System.out.println("Punti --> ");
-                        punti=tastiera.readInt();
-                        while(punti<=0)
+                        System.out.println("Non ci sono tennisti all'interno della classifica");
+                    }
+                    else
+                    {
+                        try 
                         {
-                            System.out.println("Inserisci dei punti validi(>0)!");
+                            System.out.println("Inserisci la posizione del tennista--> ");
+                            posizione=tastiera.readInt();
+                            posizione--;
                             System.out.println("Punti --> ");
                             punti=tastiera.readInt();
+                            while(punti<=0)
+                            {
+                                System.out.println("Inserisci dei punti validi(>0)!");
+                                System.out.println("Punti --> ");
+                                punti=tastiera.readInt();
+                            }
+                            c1.aggiungiPuntiTennista(punti, posizione);
+                            System.out.println("Punti inseriti correttamente.");
+                        } 
+                        catch (IOException ex) 
+                        {
+                            System.out.println("Errore. Impossibile leggere da tastiera");
+                        } 
+                        catch (NumberFormatException ex) 
+                        {
+                            System.out.println("Formato non corretto");
+                        } 
+                        catch (EccezioneIdNonValido ex) 
+                        {
+                            System.out.println("Posizione non valida");
                         }
-                        c1.aggiungiPuntiTennista(punti, posizione);
-                        System.out.println("Punti inseriti correttamente.");
-                    } 
-                    catch (IOException ex) 
-                    {
-                        System.out.println("Errore. Impossibile leggere da tastiera");
-                    } 
-                    catch (NumberFormatException ex) 
-                    {
-                        System.out.println("Formato non corretto");
-                    } 
-                    catch (EccezioneIdNonValido ex) 
-                    {
-                        System.out.println("Posizione non valida");
                     }
                     break;
                     
                 case 6://aggiungi titoli
-                    try 
+                    if(c1.getNTennistiPresenti()==0)
                     {
-                        System.out.println("Inserisci la posizione del tennista--> ");
-                        posizione=tastiera.readInt();
-                        posizione--;
-                        System.out.println("Titoli --> ");
-                        titoli=tastiera.readInt();
-                        while(titoli<=0)
+                        System.out.println("Non ci sono tennisti all'interno della classifica");
+                    }
+                    else
+                    {
+                        try 
                         {
-                            System.out.println("Inserisci un numero di titoli validi(>0)!");
+                            System.out.println("Inserisci la posizione del tennista--> ");
+                            posizione=tastiera.readInt();
+                            posizione--;
                             System.out.println("Titoli --> ");
                             titoli=tastiera.readInt();
+                            while(titoli<=0)
+                            {
+                                System.out.println("Inserisci un numero di titoli validi(>0)!");
+                                System.out.println("Titoli --> ");
+                                titoli=tastiera.readInt();
+                            }
+                            c1.aggiungiTitoliTennista(titoli, posizione);
+                            System.out.println("Titoli inseriti correttamente.");
+                        } 
+                        catch (IOException ex) 
+                        {
+                            System.out.println("Errore. Impossibile leggere da tastiera");
+                        } 
+                        catch (NumberFormatException ex) 
+                        {
+                            System.out.println("Formato non corretto");
+                        } 
+                        catch (EccezioneIdNonValido ex) 
+                        {
+                            System.out.println("Posizione non valida");
                         }
-                        c1.aggiungiTitoliTennista(titoli, posizione);
-                        System.out.println("Titoli inseriti correttamente.");
-                    } 
-                    catch (IOException ex) 
-                    {
-                        System.out.println("Errore. Impossibile leggere da tastiera");
-                    } 
-                    catch (NumberFormatException ex) 
-                    {
-                        System.out.println("Formato non corretto");
-                    } 
-                    catch (EccezioneIdNonValido ex) 
-                    {
-                        System.out.println("Posizione non valida");
                     }
                     break;
                     

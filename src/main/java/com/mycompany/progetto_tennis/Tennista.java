@@ -186,8 +186,7 @@ public class Tennista implements Serializable{
     {
         Tennista ten;
         ten=(Tennista)t;
-        if(ten.getNome()==getNome()&&ten.getCognome()==getCognome()&&ten.getDataNascita()
-                ==getDataNascita()&&ten.getPunti()==getPunti()&&ten.getTitoliVinti()==getTitoliVinti())
+        if(ten.getNome().equals(getNome())&&ten.getCognome().equals(getCognome())&&ten.getDataNascita().equals(getDataNascita())&&ten.getPunti()==getPunti()&&ten.getTitoliVinti()==getTitoliVinti())
             return true;
         else
             return false;

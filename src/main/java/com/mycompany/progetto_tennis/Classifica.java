@@ -52,11 +52,12 @@ public class Classifica implements Serializable{
             } 
             catch (EccezioneIdNonValido ex) 
             {
-                //non fare nulla
+                classificaAtp[i]=null;
             } 
             catch (EccezioneClassificaPiena ex) 
             {
-                //non succederà mai
+                //non succederà mai ma in caso
+                break;
             }
         }
     }
@@ -319,6 +320,7 @@ public class Classifica implements Serializable{
     {
         Classifica c1;
         c1=(Classifica)c;
+        c1.ordinatoreId();
         if(c1.getNTennistiPresenti()==nTennistiPresenti)
         {
             for(int i=0;i<nTennistiPresenti;i++)

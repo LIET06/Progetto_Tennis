@@ -325,7 +325,7 @@ public class ClassificaTest {
     /**
      * Test of esportaCSV and importaCSV method, of class Classifica.
      */
-    /*@Test
+    @Test
     public void testEsportaImportaCSVConEquals() throws Exception {
         Classifica c1=new Classifica();
         Tennista t=new Tennista("Luca", "Lieto", LocalDate.of(2006, 12, 13), 200, 2);
