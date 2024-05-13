@@ -161,6 +161,8 @@ public class Classifica implements Serializable{
         if (id<0 ||id>nTennistiPresenti-1)
             throw new EccezioneIdNonValido();
         classificaAtp[id].setPunti((classificaAtp[id].getPunti()+punti));
+        classificaAtp=Ordinatore.selectionSortDecrescente(classificaAtp);
+        ordinatoreId();
     }
     
     /**
@@ -176,6 +178,8 @@ public class Classifica implements Serializable{
         if (id<0 ||id>nTennistiPresenti-1)
             throw new EccezioneIdNonValido();
         classificaAtp[id].setTitoliVinti((classificaAtp[id].getTitoliVinti()+titoli));
+        classificaAtp=Ordinatore.selectionSortDecrescente(classificaAtp);
+        ordinatoreId();
     }
     
     /**
